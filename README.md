@@ -149,3 +149,22 @@ If so set your archflags during pip install. eg: _ARCHFLAGS="-arch x86_64" pip3 
 
 # Disclaimer
 This is a test project to validate the feasibility of a fully private solution for question answering using LLMs and Vector embeddings. It is not production ready, and it is not meant to be used in production. The models selection is not optimized for performance, but for privacy; but it is possible to use different models and vectorstores to improve performance.
+
+# Dockerized workflow
+
+``` sh
+docker build -t private-gpt
+```
+
+``` sh
+mkdir -p db
+docker run --rm \
+  -it \
+  -p 5000:5000 \
+  --volume $(pwd)/:/usr/src/privateGPT \
+  --volume $(pwd)/source_documents:/usr/src/privateGPT/source_documents \
+  --volume $(pwd)/db:/usr/src/privateGPT/db \
+  --user $(id -u):$(id -g) \
+  private-gpt
+```
+
