@@ -157,13 +157,13 @@ docker build -t private-gpt
 ```
 
 ``` sh
-mkdir -p db
 docker run --rm \
   -it \
   -p 5000:5000 \
   --volume $(pwd)/:/usr/src/privateGPT \
   --volume $(pwd)/source_documents:/usr/src/privateGPT/source_documents \
   --volume $(pwd)/db:/usr/src/privateGPT/db \
+  --volume $(pwd)/../memory-cache/browser-client/build:/usr/src/privateGPT/browser-client \
   --user $(id -u):$(id -g) \
   private-gpt
 ```
