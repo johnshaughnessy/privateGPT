@@ -7,7 +7,7 @@ license = "Apache Version 2.0"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "~3.10.0"
 langchain = "0.0.274"
 gpt4all = "1.0.8"
 chromadb = "0.4.12"
@@ -22,6 +22,13 @@ pandoc = "^2.3"
 pypandoc = "^1.11"
 tqdm = "4.66.1"
 sentence-transformers = "2.2.2"
+torch = { url = "https://download.pytorch.org/whl/cpu/torch-2.1.2%2Bcpu-cp310-cp310-linux_x86_64.whl" }
+python-socketio = { version = "5.5.0", optional = true,  extras = ["asyncio_server"] }
+uvicorn = { version = "^0.26.0", optional = true,  extras = ["standard"] }
+markdown = "^3.5.2"
+
+[tool.poetry.extras]
+server = ["python-socketio", "uvicorn"]
 
 
 [build-system]
