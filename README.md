@@ -161,10 +161,39 @@ docker run --rm \
   -it \
   -p 5000:5000 \
   --volume $(pwd)/:/usr/src/privateGPT \
-  --volume $(pwd)/source_documents:/usr/src/privateGPT/source_documents \
+  --volume /home/john/Downloads/MemoryCache/:/usr/src/privateGPT/source_documents \
   --volume $(pwd)/db:/usr/src/privateGPT/db \
   --volume $(pwd)/../memory-cache/browser-client/build:/usr/src/privateGPT/browser-client \
   --user $(id -u):$(id -g) \
   private-gpt
+``**
+
+# Gotchas
+
+## CUDA errors
+
+On Linux, if CUDA is not installed, you may encounter the following errors:
+
+```plaintext
+OSError: libcurand.so.10: cannot open shared object file: No such file or directory
 ```
+
+```plaintext
+ValueError: libcublas.so.*[0-9] not found in the system path ['/usr/src/privateGPT', '/usr/local/lib/python310.zip', '/usr/local/lib/python3.10', '/usr/local/lib/python3.10/lib-dynload', '/home/httpserver/.cache/pypoetry/virtualenvs/privategpt-vMoAGTMu-py3.10/lib/python3.10/site-packages']
+```
+
+You can fix this either by:
+- Installing CUDA (requires NVIDIA GPU)
+- Installing the `ROCm` version of PyTorch (requires AMD GPU)
+- Installing the `cpu-only` version of PyTorch
+
+For example, to install the `cpu-only` version of PyTorch:
+ 
+```sh
+pip uninstall torch
+pip install torch==2.0.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
+```
+
+(Be sure to run these commands within the virtual environment started by `poetry shell`.)
+
 

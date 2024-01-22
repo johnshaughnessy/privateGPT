@@ -11,7 +11,7 @@ import argparse
 import time
 
 def init():
-    global qa
+    global qa, args
     if not load_dotenv():
         print("Could not load .env file or it is empty. Please check if it exists and is readable.")
         exit(1)
@@ -58,8 +58,8 @@ def parse_arguments():
     return parser.parse_args()
 
 
-def query(prompt):
-    global qa
+async def query(prompt):
+    global qa, args
 
     # Get the answer from the chain
     start = time.time()
@@ -68,15 +68,22 @@ def query(prompt):
     end = time.time()
 
     # Print the result
-    print("\n\n> Question:")
-    print(prompt)
-    print(f"\n> Answer (took {round(end - start, 2)} s.):")
-    print(answer)
+    # print("\n\n> Question:")
+    # print(prompt)
+    # print(f"\n> Answer (took {round(end - start, 2)} s.):")
+    # print(answer)
+
+    source_documents = []
 
     # Print the relevant sources used for the answer
     for document in docs:
-        print("\n> " + document.metadata["source"] + ":")
-        print(document.page_content)
+        source_doc = {
+            "source": document.metadata["source"],
+            "content": document.page_content
+        }
+        source_documents.append(source_doc)
+        # print("\n> " + document.metadata["source"] + ":")
+        # print(document.page_content)
 
     # Return a dictionary with:
     # - prompt
@@ -87,7 +94,7 @@ def query(prompt):
         "prompt": prompt,
         "reply": answer,
         "time": round(end - start, 2),
-        "source_documents": docs
+        "source_documents": source_documents
     }
 
 if __name__ == "__main__":
