@@ -89,6 +89,7 @@ async def process_query(text, message_sid):
     second_reply = {
         "kind": "second_reply",
         "text": llm_output.get("reply"),
+        "time": llm_output.get("time"),
         "message_sid": message_sid,
     }
     await sio.emit("message", json.dumps(second_reply))
